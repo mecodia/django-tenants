@@ -1,5 +1,6 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.db import connection
+from django.conf import settings
 from django.http import Http404
 from django.urls import set_urlconf, clear_url_caches
 
