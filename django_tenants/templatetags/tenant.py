@@ -2,7 +2,8 @@ from django.conf import settings
 from django.template import Library
 from django.template.defaulttags import URLNode
 from django.template.defaulttags import url as default_url
-from django_tenants.utils import clean_tenant_url, get_public_schema_name, has_multi_type_tenants, get_tenant_types
+
+from django_tenants.utils import clean_tenant_url, get_public_schema_name, has_multi_type_tenants, get_tenant_types, app_in_list
 
 register = Library()
 
@@ -35,7 +36,7 @@ def is_tenant_app(context, app):
             return True
     else:
         _apps = settings.TENANT_APPS
-    return app['app_label'] in [tenant_app.split('.')[-1] for tenant_app in _apps]
+    return app_in_list(app['app_label'], _apps)
 
 
 @register.simple_tag()
@@ -44,7 +45,8 @@ def is_shared_app(app):
         _apps = get_tenant_types()[get_public_schema_name()]['APPS']
     else:
         _apps = settings.SHARED_APPS
-    return app['app_label'] in [tenant_app.split('.')[-1] for tenant_app in _apps]
+
+    return app_in_list(app['app_label'], _apps)
 
 
 @register.simple_tag()
