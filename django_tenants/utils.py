@@ -219,6 +219,23 @@ def app_labels(apps_list):
     return [app.split('.')[-1] for app in apps_list]
 
 
+def app_in_list(self, app_label, apps_list):
+    """
+    Is 'app_label' present in 'apps_list'?
+
+    apps_list is either settings.SHARED_APPS or settings.TENANT_APPS, a
+    list of app names.
+
+    We check the presence of the app's name or the full path to the apps's
+    AppConfig class.
+    https://docs.djangoproject.com/en/1.8/ref/applications/#configuring-applications
+    """
+    appconfig = apps.get_app_config(app_label)
+    appconfig_default_app = appconfig.__module__
+    appconfig_full_name = '{}.{}'.format(appconfig.__module__, appconfig.__class__.__name__)
+    return (appconfig.name in apps_list) or (appconfig_full_name in apps_list) or (appconfig_default_app in apps_list)
+
+
 def parse_tenant_config_path(config_path):
     """
     Convenience function for parsing django-tenants' path configuration strings.

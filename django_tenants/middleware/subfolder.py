@@ -1,5 +1,6 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.db import connection
+from django.conf import settings
 from django.http import Http404
 from django.urls import set_urlconf, clear_url_caches
 
@@ -51,7 +52,7 @@ class TenantSubfolderMiddleware(TenantMainMiddleware):
             except tenant_model.DoesNotExist:
                 raise self.TENANT_NOT_FOUND_EXCEPTION("Unable to find public tenant")
 
-            self.setup_url_routing(request)
+            request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
 
         # We are in a specific tenant
         else:
