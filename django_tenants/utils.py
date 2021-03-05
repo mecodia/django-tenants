@@ -219,7 +219,7 @@ def app_labels(apps_list):
     return [app.split('.')[-1] for app in apps_list]
 
 
-def app_in_list(self, app_label, apps_list):
+def app_in_list(app_label, apps_list):
     """
     Is 'app_label' present in 'apps_list'?
 
